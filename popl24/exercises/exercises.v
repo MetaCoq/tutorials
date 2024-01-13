@@ -1,31 +1,32 @@
-(** * MetaCoq  *)
+(*** MetaCoq Tutorial @ POPL 2024 ***)
 
-(** ** Print Assumptions
+(** EXERCISE ** Print Assumptions
 
-A recent question on coq-club asked
+  A recent question on coq-club asked
 
-"Is there a way to get Print Assumptions to output fully qualified names of all items?"
+  "Is there a way to get Print Assumptions to output fully qualified names of
+  all items?"
 
-(https://sympa.inria.fr/sympa/arc/coq-club/2024-01/msg00007.html)
+  (https://sympa.inria.fr/sympa/arc/coq-club/2024-01/msg00007.html)
 
-There is no satisfying answer using just Coq's Print Assumptions command.
+  There is no satisfying answer using just Coq's Print Assumptions command.
 
-The exercise here is to implement an improved Print Assumptions command in Coq, such that
+  The exercise here is to implement an improved Print Assumptions command in
+  Coq, such that
 
-Compute print_assumptions ($quote_rec 0).
+  Compute print_assumptions ($quote_rec 0).
 
-prints []
+  prints []
 
-and
+  and
 
-Axiom test : nat.
+  Axiom test : nat.
 
-Compute print_assumptions ($quote_rec test).
+  Compute print_assumptions ($quote_rec test).
 
-prints a list containing a representation of test.
+  prints a list containing a representation of test.
 
-Define print_assumptions : global_env * term -> list kername
-*)
+  Define print_assumptions : global_env * term -> list kername
 
 Load MetaCoqPrelude.
 (* if this does not work for you, compile the file using `coqc -I . "" MetaCoqPrelude`, and instead use the following line *)
@@ -35,7 +36,7 @@ Require Import List.
 Unset Guard Checking.
 Section fix_Σ.
 
-Variable (Σ : global_env).
+  Variable (Σ : global_env).
 
 End fix_Σ.
 Set Guard Checking.
@@ -46,25 +47,27 @@ Set Guard Checking.
 
 Axiom test : nat.
 
-(* Compute print_assumptions ($quote_rec test). *)
+(* Compute print_assumptions ($quote_rec test).
 
-(* Module test. *)
+Module test.
 
-(*   Require Import Classical. *)
+  Require Import Classical.
 
-(*   Lemma DNE P : ~~ P -> P. *)
-(*   Proof. *)
-(*     tauto. *)
-(*   Qed. *)
+  Lemma DNE P : ~~ P -> P.
+  Proof.
+    tauto.
+  Qed.
 
-(* End test. *)
+End test.
 
-(* Compute print_assumptions ($quote_rec test.DNE). *)
+Compute print_assumptions ($quote_rec test.DNE). *)
 
-(** ** Define a function which replaces let binding by equivalent beta redexes
+(** EXERCISE
 
-You can copy-paste and rename the below identity function as starting point.
- *)
+  Define a function which replaces let binding by equivalent beta redexes.
+  You can copy-paste and rename the below identity function as starting point.
+
+**)
 
 Fixpoint identity (t : term) :=
   match t with
@@ -93,7 +96,12 @@ Fixpoint identity (t : term) :=
 
 (* Check $unquote (let_to_lambda (Mower 5)). *)
 
-(** ** Define a function which replaces any subterm  of form a * b + c by a call to muladd:  *)
+(** EXERCISE
+
+  Define a function which replaces any subterm of the form a * b + c by a call
+  to muladd:
+
+**)
 
 Definition muladd a b c := a * b + c.
 
@@ -103,15 +111,19 @@ Unset Guard Checking.
 
 (* Check $unquote (fold_muladd ($quote (1 + (3 * 2 + 5)))). *)
 
-(** ** Write a command reify that reifies Coq formulas into the following datatype  *)
+(** EXERCISE
+
+  Write a command reify that reifies Coq formulas into the following datatype
+
+**)
 
 Inductive arith :=
 | aPlus : arith -> arith -> arith
 | aConst : nat -> arith.
 
-(* Goal 4 + (3 + 1) = 2. *)
-(* Proof. *)
-(*   match goal with *)
-(*   | [ |- ?L = _ ] => pose ($unquote (reify ($quote L))) *)
-(*   end. *)
-(* Abort. *)
+(* Goal 4 + (3 + 1) = 2.
+Proof.
+  match goal with
+  | [ |- ?L = _ ] => pose ($unquote (reify ($quote L)))
+  end.
+Abort. *)
