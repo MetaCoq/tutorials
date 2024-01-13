@@ -139,7 +139,8 @@ Unset Guard Checking.
 
 (** EXERCISE
 
-  Write a command reify that reifies Coq formulas into the following datatype
+  Write a command reify that reifies Coq arithmetic formulas into the following
+  datatype.
 
 **)
 
