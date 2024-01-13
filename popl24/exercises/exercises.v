@@ -1,5 +1,14 @@
 (*** MetaCoq Tutorial @ POPL 2024 ***)
 
+Load MetaCoqPrelude.
+(** If the above does not work for you, compile the file using
+  `coqc -I . "" MetaCoqPrelude` or using `make`
+  and use (uncomment) the following line instead
+**)
+(* Require Import MetaCoqPrelude. *)
+
+Require Import List.
+
 (** EXERCISE ** Print Assumptions
 
   A recent question on coq-club asked
@@ -29,15 +38,6 @@
   Define print_assumptions : global_env * term -> list kername
 
 **)
-
-Load MetaCoqPrelude.
-(** If the above does not work for you, compile the file using
-  `coqc -I . "" MetaCoqPrelude` or using `make`
-  and use (uncomment) the following line instead
-**)
-(* Require Import MetaCoqPrelude. *)
-
-Require Import List.
 
 Unset Guard Checking.
 Section fix_Σ.
