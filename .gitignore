@@ -43,3 +43,7 @@ time-of-build-after.log
 time-of-build-before.log
 time-of-build-both.log
 time-of-build-pretty.log
+
+popl24/exercises/Makefile.coq
+
+popl24/exercises/Makefile.coq.conf
