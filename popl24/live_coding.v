@@ -1,6 +1,68 @@
-(** * MetaCoq  *)
-
+(** * The template monad  *)
 Load MetaCoqPrelude.
+
+Module monad.
+
+Import MCMonadNotation.
+From MetaCoq Require Import bytestring.
+Import String.
+Open Scope bs.
+
+Print TemplateMonad.
+
+MetaCoq Run (tmBind (tmQuote (3 + 3)) tmPrint).
+
+MetaCoq Run (tmBind (tmQuoteRec add) tmPrint).
+
+MetaCoq Run (tmBind (tmLocate "add") tmPrint).
+
+Definition printInductive (q : qualid): TemplateMonad unit :=
+  kn <- tmLocate1 q ;;
+  match kn with
+  | IndRef ind => (tmQuoteInductive ind.(inductive_mind)) >>= tmPrint
+  | _ => tmFail ("[" ++ q ++ "] is not an inductive")
+  end.
+
+MetaCoq Run (printInductive "Coq.Init.Datatypes.nat").
+MetaCoq Run (printInductive "nat").
+
+CoInductive cnat : Set :=  O :cnat | S : cnat -> cnat.
+MetaCoq Run (printInductive "cnat").
+
+Definition printConstant (q : qualid) b : TemplateMonad unit :=
+  kn <- tmLocate1 q ;;
+  match kn with
+  | ConstRef kn => (tmQuoteConstant kn b) >>= tmPrint
+  | _ => tmFail ("[" ++ q ++ "] is not a constant")
+  end.
+
+MetaCoq Run (printConstant "add" false).
+Fail MetaCoq Run (printConstant "nat" false).
+
+Definition six : nat.
+  exact (3 + 3).
+Qed.
+MetaCoq Run (printConstant "six" true).
+MetaCoq Run (printConstant "six" false).
+
+MetaCoq Run (t <- tmLemma "foo4" nat;;
+             tmDefinition "foo5" (t + t + 2)).
+Next Obligation.
+  exact 3.
+Defined.
+Print foo5.
+
+MetaCoq Run (t <- tmLemma "foo44" nat ;;
+             qt <- tmQuote t ;;
+             t <- tmEval all t ;;
+             tmPrint qt ;; tmPrint t).
+Next Obligation.
+  exact (3+2).
+Defined.
+
+End monad.
+
+(** * Meta-programs  *)
 
 Print term.
 
