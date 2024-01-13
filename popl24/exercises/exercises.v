@@ -28,9 +28,15 @@
 
   Define print_assumptions : global_env * term -> list kername
 
+**)
+
 Load MetaCoqPrelude.
-(* if this does not work for you, compile the file using `coqc -I . "" MetaCoqPrelude`, and instead use the following line *)
+(** If the above does not work for you, compile the file using
+  `coqc -I . "" MetaCoqPrelude` or using `make`
+  and use (uncomment) the following line instead
+**)
 (* Require Import MetaCoqPrelude. *)
+
 Require Import List.
 
 Unset Guard Checking.
