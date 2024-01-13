@@ -100,7 +100,7 @@ Fixpoint identity (t : term) :=
   | tFloat f => tFloat f
   end.
 
-(* Check $unquote (let_to_lambda (Mower 5)). *)
+(* Check $unquote (let_to_lambda (Mpower 5)). *)
 
 (** EXERCISE
 
@@ -116,6 +116,8 @@ Unset Guard Checking.
 (* Check $unquote (fold_muladd ($quote (3 * 2 + 5))). *)
 
 (* Check $unquote (fold_muladd ($quote (1 + (3 * 2 + 5)))). *)
+
+(* Check $unquote (fold_muladd ($quote (1 + ((7 * 9 + 12) * 2 + 5)))). *)
 
 (** EXERCISE
 
