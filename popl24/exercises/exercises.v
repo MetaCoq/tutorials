@@ -100,7 +100,25 @@ Fixpoint identity (t : term) :=
   | tFloat f => tFloat f
   end.
 
-(* Check $unquote (let_to_lambda (Mpower 5)). *)
+(* #[bypass_check(guard)]
+Fixpoint Mpower' (n : nat) : term :=
+  match n with
+  | 0 => $quote 1
+  | 1 => tRel 0
+  | 2 => tApp ($quote mult) [tRel 0; tRel 0]
+  | S n' as n => if n mod 2 =? 0 then
+                    tLet "p" ($quote nat) (Mpower' (div n 2))
+                      (tApp ($quote mult) [tRel 0 ; tRel 0])
+                else tApp ($quote mult) [Mpower' n' ; tRel 0]
+  end.
+
+Definition Mpower (n : nat) :=
+  tLam "x" ($quote nat) (Mpower' n).
+
+Definition power5 := ($unquote (Mpower 5)).
+Print power5.
+
+Check $unquote (let_to_lambda (Mpower 5)). *)
 
 (** EXERCISE
 
