@@ -30,6 +30,7 @@ Define print_assumptions : global_env * term -> list kername
 Load MetaCoqPrelude.
 (* if this does not work for you, compile the file using `coqc -I . "" MetaCoqPrelude`, and instead use the following line *)
 (* Require Import MetaCoqPrelude. *)
+Require Import List.
 
 Unset Guard Checking.
 Section fix_Σ.
